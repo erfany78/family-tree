@@ -14,7 +14,6 @@ class Family_member():
         self.name = name
         self.relation = relation
 
-
 class Person:
 
     def __init__(self, name):
@@ -33,8 +32,16 @@ class Person:
 
 x = Person("Thomas")
 Person("Mary")
+<<<<<<< HEAD
 Person("Jeff")
+=======
+Person("jeff")
+Person("Matt")
 
+
+>>>>>>> 961072e347def45085be9f23456be5bebfe1125a
 
 x.add_sibling("Jeff")
 x.list_relation("siblings")
+
+#test

@@ -33,6 +33,9 @@ class Person:
 x = Person("Thomas")
 Person("Mary")
 Person("Jeff")
+Person("jeff")
+Person("Matt")
+
 
 x.add_sibling("Jeff")
 x.list_relation("siblings")
