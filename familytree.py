@@ -29,15 +29,30 @@ class Person:
     def list_relation(self, relation):
         print(self.family_tree.family_tree[relation])
 
+def fileRead():
+    filename = input()
+    # open file and read all text
+    f = open(filename, mode='r')
+    text = f.read()
+    # tokenize words with " " delimiter
+    words = text.split()
+    # print words
+    for word in words:
+        print(word)
 
-x = Person("Thomas")
-Person("Mary")
-Person("Jeff")
-Person("jeff")
-Person("Matt")
+def main():
+
+    fileRead()
+
+    x = Person("Thomas")
+    Person("Mary")
+    Person("Jeff")
+    Person("Matt")
 
 
-x.add_sibling("Jeff")
-x.list_relation("siblings")
+    x.add_sibling("Jeff")
+    x.add_sibling("Mary")
+    x.list_relation("siblings")
 
-#test
+if __name__ == '__main__':
+    main()
