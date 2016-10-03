@@ -2,17 +2,18 @@
 Name the project FamilyTree_Kim.py
 """
 
-
+person_list = []
 class Family_tree():
 
     def __init__(self):
-        self.family_tree = {"siblings": [], "parents": [], "half-siblings": [], "cousins": [], "children": [], 'spouses': []}
+        self.family_tree = {"siblings": [], "parents": [], "half-siblings": [], "cousins": [], "children": [], 'spouses': [], "ancestors": []}
 
 class Person:
 
     def __init__(self, name):
         self.name = name
         self.family_tree = Family_tree().family_tree
+        person_list.append(self)
 
     def add_parents(self, parent_one, parent_two):
         self.family_tree['parents'].append(parent_one)
@@ -22,8 +23,20 @@ class Person:
         if parent_two not in parent_one.family_tree['spouses']:
             parent_one.family_tree['spouses'].append(parent_two)
 
+        # Adds the parents as ancestors of the Person as defined in specs
+        self.family_tree['ancestors'].append(parent_one)
+        self.family_tree['ancestors'].extend(parent_one.family_tree['ancestors'])
+        self.family_tree['ancestors'].append(parent_two)
+        self.family_tree['ancestors'].extend(parent_two.family_tree['ancestors'])
+
     def add_children(self, child):
         self.family_tree['children'].append(child)
+
+    def add_spouse(self, spouse):
+        if spouse not in self.family_tree['spouses']:
+            self.family_tree['spouses'].append(spouse)
+        if self not in spouse.family_tree['spouses']:
+            spouse.family_tree['spouses'].append(self)
 
     def add_siblings(self, parent_one, parent_two):
         for child in parent_one.family_tree['children']:
@@ -36,6 +49,12 @@ class Person:
                     if self not in child.family_tree['half-siblings']:
                         child.family_tree['half-siblings'].append(self)
 
+                # Adds the siblings to the cousin list as 0th cousins as defined in specs
+                if self not in child.family_tree['cousins']:
+                    child.family_tree['cousins'].append(self)
+                if child not in self.family_tree['cousins']:
+                    self.family_tree['cousins'].append(child)
+
         for child in parent_two.family_tree['children']:
             if child not in self.family_tree['siblings'] and self.name is not child.name:
                 if child in parent_one.family_tree['children']:
@@ -45,6 +64,12 @@ class Person:
                     self.family_tree['half-siblings'].append(child)
                     if self not in child.family_tree['half-siblings']:
                         child.family_tree['half-siblings'].append(self)
+
+                # Adds the siblings to the cousin list as 0th cousins as defined in specs
+                if self not in child.family_tree['cousins']:
+                    child.family_tree['cousins'].append(self)
+                if child not in self.family_tree['cousins']:
+                    self.family_tree['cousins'].append(child)
 
     def add_cousins(self, parent_one, parent_two):
         for cousin in parent_one.family_tree['cousins']:
@@ -59,12 +84,46 @@ class Person:
                 if self not in cousin.family_tree['cousins']:
                     cousin.family_tree['cousins'].append(self)
 
+        for sibling in parent_one.family_tree['siblings']:
+            if sibling not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(sibling)
+                if self not in sibling.family_tree['cousins']:
+                    sibling.family_tree['cousins'].append(self)
+
+        for sibling in parent_two.family_tree['siblings']:
+            if sibling not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(sibling)
+                if self not in sibling.family_tree['cousins']:
+                    sibling.family_tree['cousins'].append(self)
+
+    # Deprecated. Use the Operations class function list_relation(person_name, relation)
     def list_relation(self, relation):
-        #print(self.family_tree[relation])
         for family_member in self.family_tree[relation]:
             print(family_member.name)
 
-person_list = []
+class Operations():
+
+    def list_relation(self, person_name, relation):
+        for person in person_list:
+            if person_name is person.name:
+                for family_member in person.family_tree[relation]:
+                    print(family_member.name)
+
+    def is_relation(self, person_name_one, person_name_two, relation):
+        #  Checks to see if person_one has RELATION with person_two
+        #  All the above attributes are strings
+        #  Returns true or false
+        for person in person_list:
+            if person_name_one is person.name:
+                for person_2 in person_list:
+                    if person_name_two is person_2.name:
+                        if person_2 in person.family_tree[relation]:
+                            print("true")
+                            return
+                        else:
+                            print("false")
+                            return
+        print("false")
 
 def check_exists(person_name):
     if person_name in person_list:
@@ -91,32 +150,29 @@ def main():
     y = Person("Mary")
     z = Person("Jeff")
 
-    half_p = Person("ewok")
-    half = Person("pete")
-
-    a.add_parents(y, z)
+    a.add_parents(x, y)
     y.add_children(a)
-    z.add_children(a)
-    a.add_siblings(y, z)
+    x.add_children(a)
+    a.add_siblings(x, y)
 
-    x.add_parents(y, z)
-    y.add_children(x)
-    z.add_children(x)
-    a.add_siblings(y, z)
+    z.add_parents(x, y)
+    y.add_children(z)
+    x.add_children(z)
+    z.add_siblings(x, y)
 
-    #a.list_relation("siblings")
-    #x.list_relation("siblings")
+    mother = Person("sara")
+    grand = Person("Pete")
 
-    half.add_parents(half_p, y)
-    half_p.add_children(half)
-    y.add_children(half)
-    half.add_siblings(half_p, y)
+    grand.add_parents(z, mother)
+    z.add_children(grand)
+    mother.add_children(grand)
+    grand.add_siblings(z, mother)
+    grand.add_cousins(z, mother)
 
-    #half.list_relation('half-siblings')
-    #half.list_relation('siblings')
-    a.list_relation('siblings')
-    y.list_relation('spouses')
-    #half_p.list_relation('spouses')
+    ops = Operations()
+    ops.list_relation("Thomas", "spouses")
+    ops.is_relation("Thomas", "Mary", "spouses")
+    grand.list_relation("cousins")
 
 
 
