@@ -27,6 +27,7 @@ class Person:
         parent_two.add_children(self)
 
         self.add_siblings(parent_one, parent_two)
+        self.add_cousins(parent_one, parent_two)
 
         # Adds the parents as ancestors of the Person as defined in specs
         self.family_tree['ancestors'].append(parent_one)
@@ -162,24 +163,39 @@ def fileRead():
 def main():
 
     #fileRead()
-    a = Person("Rob")
-    x = Person("Thomas")
-    y = Person("Mary")
-    z = Person("Jeff")
+    a = Person("John")
+    b = Person("Mary")
+    c = Person("Bill")
+    d = Person("Pete")
+    j = Person("Fred")
+    e = Person("Jean")
+    f = Person("Rebecca")
+    g = Person("Andrew")
+    h = Person("Carol")
+    i = Person("Jim")
 
-    a.add_parents(x, y)
 
-    z.add_parents(x, y)
+    c.add_parents(a, b)
+    d.add_parents(a, b)
+    j.add_parents(a, b)
+    f.add_parents(a, e)
+    g.add_parents(c, f)
+    i.add_parents(d, h)
 
-    mother = Person("sara")
-    grand = Person("Pete")
+    op = Operations()
+    op.list_relation("Pete", "parents")
 
-    grand.add_parents(z, mother)
-    ops = Operations()
-    ops.list_relation("Thomas", "spouses")
-    ops.is_relation("Thomas", "Mary", "spouses")
-    grand.list_relation("cousins")
+    op.is_relation("Bill", "Pete", "siblings")
 
+    op.is_relation("Bill", "Fred", "siblings")
+
+    op.list_relation("Andrew", "ancestors")
+
+    op.is_relation("Bill", "Mary", "cousins")
+    op.is_relation("Bill", "Rebecca", "cousins")
+    op.is_relation("Rebecca", "Jim", "cousins")
+
+    
 
 
 main()
