@@ -95,11 +95,23 @@ class Person:
                 if self not in sibling.family_tree['cousins']:
                     sibling.family_tree['cousins'].append(self)
 
+        for halfsib in parent_one.family_tree['half-siblings']:
+            if halfsib not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(halfsib)
+                if self not in halfsib.family_tree['cousins']:
+                    halfsib.family_tree['cousins'].append(self)
+
         for sibling in parent_two.family_tree['siblings']:
             if sibling not in self.family_tree['cousins']:
                 self.family_tree['cousins'].append(sibling)
                 if self not in sibling.family_tree['cousins']:
                     sibling.family_tree['cousins'].append(self)
+
+        for halfsib in parent_two.family_tree['half-siblings']:
+            if halfsib not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(halfsib)
+                if self not in halfsib.family_tree['cousins']:
+                    halfsib.family_tree['cousins'].append(self)
 
     # Deprecated. Use the Operations class function list_relation(person_name, relation)
     def list_relation(self, relation):
