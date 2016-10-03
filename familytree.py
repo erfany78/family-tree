@@ -23,6 +23,11 @@ class Person:
         if parent_two not in parent_one.family_tree['spouses']:
             parent_one.family_tree['spouses'].append(parent_two)
 
+        parent_one.add_children(self)
+        parent_two.add_children(self)
+
+        self.add_siblings(parent_one, parent_two)
+
         # Adds the parents as ancestors of the Person as defined in specs
         self.family_tree['ancestors'].append(parent_one)
         self.family_tree['ancestors'].extend(parent_one.family_tree['ancestors'])
@@ -151,24 +156,13 @@ def main():
     z = Person("Jeff")
 
     a.add_parents(x, y)
-    y.add_children(a)
-    x.add_children(a)
-    a.add_siblings(x, y)
 
     z.add_parents(x, y)
-    y.add_children(z)
-    x.add_children(z)
-    z.add_siblings(x, y)
 
     mother = Person("sara")
     grand = Person("Pete")
 
     grand.add_parents(z, mother)
-    z.add_children(grand)
-    mother.add_children(grand)
-    grand.add_siblings(z, mother)
-    grand.add_cousins(z, mother)
-
     ops = Operations()
     ops.list_relation("Thomas", "spouses")
     ops.is_relation("Thomas", "Mary", "spouses")
