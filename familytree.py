@@ -6,7 +6,7 @@ Name the project FamilyTree_Kim.py
 class Family_tree():
 
     def __init__(self):
-        self.family_tree = {"siblings": [], "parents": [], "half-siblings": [], "cousins": [], "children": []}
+        self.family_tree = {"siblings": [], "parents": [], "half-siblings": [], "cousins": [], "children": [], 'spouses': []}
 
 class Person:
 
@@ -16,7 +16,11 @@ class Person:
 
     def add_parents(self, parent_one, parent_two):
         self.family_tree['parents'].append(parent_one)
+        if parent_one not in parent_two.family_tree['spouses']:
+            parent_two.family_tree['spouses'].append(parent_one)
         self.family_tree['parents'].append(parent_two)
+        if parent_two not in parent_one.family_tree['spouses']:
+            parent_one.family_tree['spouses'].append(parent_two)
 
     def add_children(self, child):
         self.family_tree['children'].append(child)
@@ -42,8 +46,18 @@ class Person:
                     if self not in child.family_tree['half-siblings']:
                         child.family_tree['half-siblings'].append(self)
 
-    def add_cousins(self):
-        pass
+    def add_cousins(self, parent_one, parent_two):
+        for cousin in parent_one.family_tree['cousins']:
+            if cousin not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(cousin)
+                if self not in cousin.family_tree['cousins']:
+                    cousin.family_tree['cousins'].append(self)
+
+        for cousin in parent_two.family_tree['cousins']:
+            if cousin not in self.family_tree['cousins']:
+                self.family_tree['cousins'].append(cousin)
+                if self not in cousin.family_tree['cousins']:
+                    cousin.family_tree['cousins'].append(self)
 
     def list_relation(self, relation):
         #print(self.family_tree[relation])
@@ -101,6 +115,8 @@ def main():
     #half.list_relation('half-siblings')
     #half.list_relation('siblings')
     a.list_relation('siblings')
+    y.list_relation('spouses')
+    #half_p.list_relation('spouses')
 
 
 
