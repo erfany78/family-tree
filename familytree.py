@@ -1,7 +1,6 @@
 """
 Name the project FamilyTree_Kim.py
 """
-
 import sys
 
 person_list = []
@@ -130,59 +129,69 @@ class Person:
 
 class Operations():
 
+    output = open(sys.argv[2], mode="w")
+
     def list_relation(self, person_name, relation):
-        sorted_by_name = []
+        sorted_relations = []
         for person in person_list:
             if person_name == person.name:
                 for family_member in person.family_tree[relation]:
-                    sorted_by_name.append(family_member.name)
-        for name in sorted(sorted_by_name):
-            print(name)
+                    sorted_relations.append(family_member.name)
+        self.output.write("\n" + "W " + person_name + " " + relation + "\n")
+        for member in sorted(sorted_relations):
+            print(member)
+            self.output.write(member + "\n")
 
     def is_relation(self, person_name_one, person_name_two, relation):
         #  Checks to see if person_one has RELATION with person_two
         #  All the above attributes are strings
         #  Returns true or false
+        self.output.write("\n" + "X " + person_name_one + " " + relation + " " + person_name_two + "\n")
         for person in person_list:
             if person_name_one == person.name:
                 for person_2 in person_list:
                     if person_name_two == person_2.name:
                         if person_2 in person.family_tree[relation]:
                             print("Yes")
+                            self.output.write("Yes\n")
                             return
                         else:
                             print("No")
+                            self.output.write("No\n")
                             return
+        self.output.write("No\n")
         print("No")
 
     def closest_relation(self, person_one, person_two):
+        self.output.write("\n" + "R " + person_one.name + " " + person_two.name + "\n")
         if person_two in person_one.family_tree["spouse"]:
             print("spouse")
-            return
-        if person_two in person_one.family_tree["sibling"]:
-            print("sibling")
-            return
-        if person_two in person_one.family_tree["half-sibling"]:
-            print("half-sibling")
+            self.output.write("spouse\n")
             return
         if person_two in person_one.family_tree["parent"]:
             print("parent")
+            self.output.write("parent\n")
+            return
+        if person_two in person_one.family_tree["sibling"]:
+            print("sibling")
+            self.output.write("sibling\n")
+            return
+        if person_two in person_one.family_tree["half-sibling"]:
+            print("half-sibling")
+            self.output.write("half-sibling\n")
             return
         if person_two in person_one.family_tree["ancestor"]:
             print("ancestor")
+            self.output.write("ancestor\n")
             return
         if person_two in person_one.family_tree["cousin"]:
             print("cousin")
+            self.output.write("cousin\n")
             return
         else:
+            self.output.write("Unrelated\n")
             print("Unrelated")
-
-
-def check_exists(person_name):
-    if person_name in person_list:
-        pass
-    else:
-        return Person(person_name)
+            return
 
 def retrieve_person(person_name):
     for person in person_list:
@@ -192,15 +201,11 @@ def retrieve_person(person_name):
 
 def fileRead():
     op = Operations()
-    arguments = sys.argv
     # open file and read all text
-    f = open(arguments[1], mode='r')
-    write = open("output.txt", mode="w")
+    f = open(sys.argv[1], mode='r')
     text = f.read()
     # tokenize words with " " delimiter
     text = text.split("\n")
-    write.write("testo\n")
-    write.write("next")
 
     for line in text:
         commands = line.split(" ")
@@ -236,10 +241,8 @@ def fileRead():
             print("\n" + line)
             op.is_relation(person_one.name, person_two.name, relation)
 
+
 def main():
     fileRead()
 
-
 main()
-#if __name__ == '__main__':
-#    main()

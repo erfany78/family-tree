@@ -1,0 +1,29 @@
+
+W Pete parent
+John
+Mary
+
+X Bill sibling Pete
+Yes
+
+X Bill sibling Fred
+Yes
+
+R John Mary
+spouse
+
+W Andrew ancestor
+Bill
+Jean
+John
+Mary
+Rebecca
+
+X Bill cousin Mary
+No
+
+R Cathy Todd
+Unrelated
+
+X Fred cousin Jim
+Yes
