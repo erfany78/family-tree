@@ -144,7 +144,26 @@ class Operations():
         print("false")
 
     def closest_relation(self, person_one, person_two):
-        if person_two in person_one.family_tree[]
+        if person_two in person_one.family_tree["spouse"]:
+            print("spouse")
+            return
+        if person_two in person_one.family_tree["sibling"]:
+            print("sibling")
+            return
+        if person_two in person_one.family_tree["half-sibling"]:
+            print("half-sibling")
+            return
+        if person_two in person_one.family_tree["parent"]:
+            print("parent")
+            return
+        if person_two in person_one.family_tree["ancestor"]:
+            print("ancestor")
+            return
+        if person_two in person_one.family_tree["cousin"]:
+            print("cousin")
+            return
+        else:
+            print("Unrelated")
 
 
 def check_exists(person_name):
@@ -191,7 +210,7 @@ def fileRead():
         if commands[0] is "R":
             person_one = retrieve_person(commands[1])
             person_two = retrieve_person(commands[2])
-            op.closest_relation()
+            op.closest_relation(person_one, person_two)
 
         if commands[0] is "X":
             person_one = retrieve_person(commands[1])
@@ -201,56 +220,7 @@ def fileRead():
 
 
 def main():
-
-<<<<<<< HEAD
     fileRead()
-    a = Person("Rob")
-    x = Person("Thomas")
-    y = Person("Mary")
-    z = Person("Jeff")
-=======
-    #fileRead()
-    a = Person("John")
-    b = Person("Mary")
-    c = Person("Bill")
-    d = Person("Pete")
-    j = Person("Fred")
-    e = Person("Jean")
-    f = Person("Rebecca")
-    g = Person("Andrew")
-    h = Person("Carol")
-    i = Person("Jim")
->>>>>>> 09d1ccc4745e8226f41b9da58d3236211ec6f3b5
-
-
-    c.add_parents(a, b)
-    d.add_parents(a, b)
-    j.add_parents(a, b)
-    f.add_parents(a, e)
-    g.add_parents(c, f)
-    i.add_parents(d, h)
-
-    op = Operations()
-    op.list_relation("Pete", "parents")
-
-<<<<<<< HEAD
-    grand.add_parents(z, mother)
-    ops = Operations()
-    #ops.list_relation("Thomas", "spouse")
-    #ops.is_relation("Thomas", "Mary", "spouse")
-    #grand.list_relation("cousin")
-=======
-    op.is_relation("Bill", "Pete", "siblings")
->>>>>>> 09d1ccc4745e8226f41b9da58d3236211ec6f3b5
-
-    op.is_relation("Bill", "Fred", "siblings")
-
-    op.list_relation("Andrew", "ancestors")
-
-    op.is_relation("Bill", "Mary", "cousins")
-    op.is_relation("Bill", "Rebecca", "cousins")
-    op.is_relation("Rebecca", "Jim", "cousins")
-
     
 
 
