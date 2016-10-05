@@ -2,6 +2,8 @@
 Name the project FamilyTree_Kim.py
 """
 
+import sys
+
 person_list = []
 class Family_tree():
 
@@ -30,10 +32,17 @@ class Person:
         self.add_cousins(parent_one, parent_two)
 
         # Adds the parents as ancestors of the Person as defined in specs
-        self.family_tree['ancestor'].append(parent_one)
-        self.family_tree['ancestor'].extend(parent_one.family_tree['ancestor'])
-        self.family_tree['ancestor'].append(parent_two)
-        self.family_tree['ancestor'].extend(parent_two.family_tree['ancestor'])
+        if parent_one not in self.family_tree['ancestor']:
+            self.family_tree['ancestor'].append(parent_one)
+        for ancestor in parent_one.family_tree['ancestor']:
+            if ancestor not in self.family_tree['ancestor']:
+                self.family_tree['ancestor'].append(ancestor)
+
+        if parent_two not in self.family_tree['ancestor']:
+            self.family_tree['ancestor'].append(parent_two)
+        for ancestor in parent_two.family_tree['ancestor']:
+            if ancestor not in self.family_tree['ancestor']:
+                self.family_tree['ancestor'].append(ancestor)
 
     def add_children(self, child):
         self.family_tree['children'].append(child)
@@ -122,10 +131,13 @@ class Person:
 class Operations():
 
     def list_relation(self, person_name, relation):
+        sorted_by_name = []
         for person in person_list:
             if person_name == person.name:
                 for family_member in person.family_tree[relation]:
-                    print(family_member.name)
+                    sorted_by_name.append(family_member.name)
+        for name in sorted(sorted_by_name):
+            print(name)
 
     def is_relation(self, person_name_one, person_name_two, relation):
         #  Checks to see if person_one has RELATION with person_two
@@ -136,12 +148,12 @@ class Operations():
                 for person_2 in person_list:
                     if person_name_two == person_2.name:
                         if person_2 in person.family_tree[relation]:
-                            print("true")
+                            print("Yes")
                             return
                         else:
-                            print("false")
+                            print("No")
                             return
-        print("false")
+        print("No")
 
     def closest_relation(self, person_one, person_two):
         if person_two in person_one.family_tree["spouse"]:
@@ -180,12 +192,15 @@ def retrieve_person(person_name):
 
 def fileRead():
     op = Operations()
-    #filename = input()
+    arguments = sys.argv
     # open file and read all text
-    f = open("family.txt", mode='r')
+    f = open(arguments[1], mode='r')
+    write = open("output.txt", mode="w")
     text = f.read()
     # tokenize words with " " delimiter
     text = text.split("\n")
+    write.write("testo\n")
+    write.write("next")
 
     for line in text:
         commands = line.split(" ")
@@ -205,23 +220,24 @@ def fileRead():
         if commands[0] is "W":
             person_one = retrieve_person(commands[2])
             relation = commands[1]
+            print("\n" + line)
             op.list_relation(person_one.name, relation)
 
         if commands[0] is "R":
             person_one = retrieve_person(commands[1])
             person_two = retrieve_person(commands[2])
+            print("\n" + line)
             op.closest_relation(person_one, person_two)
 
         if commands[0] is "X":
             person_one = retrieve_person(commands[1])
             relation = commands[2]
             person_two = retrieve_person(commands[3])
+            print("\n" + line)
             op.is_relation(person_one.name, person_two.name, relation)
-
 
 def main():
     fileRead()
-    
 
 
 main()
