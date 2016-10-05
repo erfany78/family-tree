@@ -201,55 +201,7 @@ def fileRead():
 
 
 def main():
-
-<<<<<<< HEAD
-    fileRead()
-    a = Person("Rob")
-    x = Person("Thomas")
-    y = Person("Mary")
-    z = Person("Jeff")
-=======
-    #fileRead()
-    a = Person("John")
-    b = Person("Mary")
-    c = Person("Bill")
-    d = Person("Pete")
-    j = Person("Fred")
-    e = Person("Jean")
-    f = Person("Rebecca")
-    g = Person("Andrew")
-    h = Person("Carol")
-    i = Person("Jim")
->>>>>>> 09d1ccc4745e8226f41b9da58d3236211ec6f3b5
-
-
-    c.add_parents(a, b)
-    d.add_parents(a, b)
-    j.add_parents(a, b)
-    f.add_parents(a, e)
-    g.add_parents(c, f)
-    i.add_parents(d, h)
-
-    op = Operations()
-    op.list_relation("Pete", "parents")
-
-<<<<<<< HEAD
-    grand.add_parents(z, mother)
-    ops = Operations()
-    #ops.list_relation("Thomas", "spouse")
-    #ops.is_relation("Thomas", "Mary", "spouse")
-    #grand.list_relation("cousin")
-=======
-    op.is_relation("Bill", "Pete", "siblings")
->>>>>>> 09d1ccc4745e8226f41b9da58d3236211ec6f3b5
-
-    op.is_relation("Bill", "Fred", "siblings")
-
-    op.list_relation("Andrew", "ancestors")
-
-    op.is_relation("Bill", "Mary", "cousins")
-    op.is_relation("Bill", "Rebecca", "cousins")
-    op.is_relation("Rebecca", "Jim", "cousins")
+    pass
 
     
 
