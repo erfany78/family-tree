@@ -122,11 +122,6 @@ class Person:
                 if self not in halfsib.family_tree['cousin']:
                     halfsib.family_tree['cousin'].append(self)
 
-    # Deprecated. Use the Operations class function list_relation(person_name, relation)
-    def list_relation(self, relation):
-        for family_member in self.family_tree[relation]:
-            print(family_member.name)
-
 class Operations():
 
     output = open(sys.argv[2], mode="w")
@@ -139,7 +134,7 @@ class Operations():
                     sorted_relations.append(family_member.name)
         self.output.write("\n" + "W " + person_name + " " + relation + "\n")
         for member in sorted(sorted_relations):
-            print(member)
+            #print(member)
             self.output.write(member + "\n")
 
     def is_relation(self, person_name_one, person_name_two, relation):
@@ -152,45 +147,45 @@ class Operations():
                 for person_2 in person_list:
                     if person_name_two == person_2.name:
                         if person_2 in person.family_tree[relation]:
-                            print("Yes")
+                            #print("Yes")
                             self.output.write("Yes\n")
                             return
                         else:
-                            print("No")
+                            #print("No")
                             self.output.write("No\n")
                             return
         self.output.write("No\n")
-        print("No")
+        #print("No")
 
-    def closest_relation(self, person_one, person_two):
+    def closest_relation(self, person_two, person_one):
         self.output.write("\n" + "R " + person_one.name + " " + person_two.name + "\n")
         if person_two in person_one.family_tree["spouse"]:
-            print("spouse")
+            #print("spouse")
             self.output.write("spouse\n")
             return
         if person_two in person_one.family_tree["parent"]:
-            print("parent")
+            #print("parent")
             self.output.write("parent\n")
             return
         if person_two in person_one.family_tree["sibling"]:
-            print("sibling")
+            #print("sibling")
             self.output.write("sibling\n")
             return
         if person_two in person_one.family_tree["half-sibling"]:
-            print("half-sibling")
+            #print("half-sibling")
             self.output.write("half-sibling\n")
             return
         if person_two in person_one.family_tree["ancestor"]:
-            print("ancestor")
+            #print("ancestor")
             self.output.write("ancestor\n")
             return
         if person_two in person_one.family_tree["cousin"]:
-            print("cousin")
+            #print("cousin")
             self.output.write("cousin\n")
             return
         else:
             self.output.write("Unrelated\n")
-            print("Unrelated")
+            #print("Unrelated")
             return
 
 def retrieve_person(person_name):
@@ -225,20 +220,20 @@ def fileRead():
         if commands[0] is "W":
             person_one = retrieve_person(commands[2])
             relation = commands[1]
-            print("\n" + line)
+            #print("\n" + line)
             op.list_relation(person_one.name, relation)
 
         if commands[0] is "R":
             person_one = retrieve_person(commands[1])
             person_two = retrieve_person(commands[2])
-            print("\n" + line)
+            #print("\n" + line)
             op.closest_relation(person_one, person_two)
 
         if commands[0] is "X":
             person_one = retrieve_person(commands[1])
             relation = commands[2]
             person_two = retrieve_person(commands[3])
-            print("\n" + line)
+            #print("\n" + line)
             op.is_relation(person_one.name, person_two.name, relation)
 
 
