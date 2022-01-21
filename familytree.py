@@ -1,268 +1,204 @@
-"""
-Name the project FamilyTree_Kim.py
-"""
-import sys
 
-person_list = []
-class Family_tree():
+class Member(object):
+    def __init__(self, founder, gender):
+       
+        self.name = founder
+        self.gender = gender
+        self.parent = None         
+        self.children = []    
 
-    def __init__(self):
-        self.family_tree = {"sibling": [], "parent": [], "half-sibling": [], "cousin": [], "children": [], 'spouse': [],"ancestor": []}
+    def __str__(self):
+        return self.name    
 
-class Person:
+    def add_parent(self, mother):
 
-    def __init__(self, name):
-        self.name = name
-        self.family_tree = Family_tree().family_tree
-        #person_list.append(self)
+        self.parent = mother   
 
-    def add_parents(self, parent_one, parent_two):
-        self.family_tree['parent'].append(parent_one)
-        if parent_one not in parent_two.family_tree['spouse']:
-            parent_two.family_tree['spouse'].append(parent_one)
-        self.family_tree['parent'].append(parent_two)
-        if parent_two not in parent_one.family_tree['spouse']:
-            parent_one.family_tree['spouse'].append(parent_two)
+    def get_parent(self):
 
-        parent_one.add_children(self)
-        parent_two.add_children(self)
+        return self.parent
 
-        self.add_siblings(parent_one, parent_two)
+    def get_chidern(self):
+        newlist=[]
+        for i in self.children:
+            can=True
+            for y in newlist:
+                if i.name==y.name :
+                    can=False
+            if can==True:            
+                newlist.append(i)
+        #print(len(newlist))
+        return newlist
+    
+    def get_parent(self):
 
-        # Adds the parents as ancestors of the Person as defined in specs
-        if parent_one not in self.family_tree['ancestor']:
-            self.family_tree['ancestor'].append(parent_one)
-        for ancestor in parent_one.family_tree['ancestor']:
-            if ancestor not in self.family_tree['ancestor']:
-                self.family_tree['ancestor'].append(ancestor)
+        return self.parent 
 
-        if parent_two not in self.family_tree['ancestor']:
-            self.family_tree['ancestor'].append(parent_two)
-        for ancestor in parent_two.family_tree['ancestor']:
-            if ancestor not in self.family_tree['ancestor']:
-                self.family_tree['ancestor'].append(ancestor)
+    def is_parent(self, mother):
 
-        self.add_cousins(parent_one, parent_two)
+        return self.parent == mother  
 
-    def add_children(self, child):
-        self.family_tree['children'].append(child)
+    def add_child(self, child):
 
-    def add_spouse(self, spouse):
-        if spouse not in self.family_tree['spouse']:
-            self.family_tree['spouse'].append(spouse)
-        if self not in spouse.family_tree['spouse']:
-            spouse.family_tree['spouse'].append(self)
+        self.children.append(child)   
 
-    def add_siblings(self, parent_one, parent_two):
-        for child in parent_one.family_tree['children']:
-            if child not in self.family_tree['sibling'] and self.name is not child.name:
-                if child in parent_two.family_tree['children']:
-                    self.family_tree['sibling'].append(child)
-                    child.add_siblings(parent_one, parent_two)
-                else:
-                    self.family_tree['half-sibling'].append(child)
-                    if self not in child.family_tree['half-sibling']:
-                        child.family_tree['half-sibling'].append(self)
-
-                # Adds the siblings to the cousin list as 0th cousins as defined in specs
-            if self not in child.family_tree['cousin']:
-                child.family_tree['cousin'].append(self)
-            if child not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(child)
-
-        for child in parent_two.family_tree['children']:
-            if child not in self.family_tree['sibling'] and self.name is not child.name:
-                if child in parent_one.family_tree['children']:
-                    self.family_tree['sibling'].append(child)
-                    child.add_siblings(parent_one, parent_two)
-                else:
-                    self.family_tree['half-sibling'].append(child)
-                    if self not in child.family_tree['half-sibling']:
-                        child.family_tree['half-sibling'].append(self)
-
-                # Adds the siblings to the cousin list as 0th cousins as defined in specs
-            if self not in child.family_tree['cousin']:
-                child.family_tree['cousin'].append(self)
-            if child not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(child)
-
-    def add_cousins(self, parent_one, parent_two):
-        for p in person_list:
-            for ancestor in self.family_tree['ancestor']:
-                if ancestor in p.family_tree['ancestor'] and p not in self.family_tree['cousin']:
-                    self.family_tree['cousin'].append(p)
-                    if self not in p.family_tree['cousin']:
-                        p.family_tree['cousin'].append(self)
-
-        for cousin in parent_one.family_tree['cousin']:
-            if cousin not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(cousin)
-            if self not in cousin.family_tree['cousin']:
-                cousin.family_tree['cousin'].append(self)
-
-        for cousin in parent_two.family_tree['cousin']:
-            if cousin not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(cousin)
-            if self not in cousin.family_tree['cousin']:
-                cousin.family_tree['cousin'].append(self)
-
-        for sibling in parent_one.family_tree['sibling']:
-            if sibling not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(sibling)
-            if self not in sibling.family_tree['cousin']:
-                sibling.family_tree['cousin'].append(self)
-
-        for halfsib in parent_one.family_tree['half-sibling']:
-            if halfsib not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(halfsib)
-            if self not in halfsib.family_tree['cousin']:
-                 halfsib.family_tree['cousin'].append(self)
-
-        for sibling in parent_two.family_tree['sibling']:
-            if sibling not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(sibling)
-            if self not in sibling.family_tree['cousin']:
-                sibling.family_tree['cousin'].append(self)
-
-        for halfsib in parent_two.family_tree['half-sibling']:
-            if halfsib not in self.family_tree['cousin']:
-                self.family_tree['cousin'].append(halfsib)
-            if self not in halfsib.family_tree['cousin']:
-                halfsib.family_tree['cousin'].append(self)
-
-class Operations():
-
-    #output = open(sys.argv[2], mode="w")
-
-    def list_relation(self, person_name, relation):
-        sorted_relations = []
-        for person in person_list:
-            if person_name == person.name:
-                for family_member in person.family_tree[relation]:
-                    #print(person.family_tree[relation])
-                    sorted_relations.append(family_member.name)
-        #self.output.write("\n" + "W " + relation + " " + person_name + "\n")
-        #print("W " + relation + " " + person_name + "\n")
-        for member in sorted(sorted_relations):
-            if member != person_name:
-                print(member)
-                #self.output.write(member + "\n")
-
-    def is_relation(self, person_name_one, person_name_two, relation):
-        #  Checks to see if person_one has RELATION with person_two
-        #  All the above attributes are strings
-        #  Returns true or false
-        #self.output.write("\n" + "X " + person_name_one + " " + relation + " " + person_name_two + "\n")
-        #print("X " + person_name_one + " " + relation + " " + person_name_two + "\n")
-        for person in person_list:
-            if person_name_one == person.name:
-                for person_2 in person_list:
-                    if person_name_two == person_2.name:
-                        if person_2 in person.family_tree[relation]:
-                            print("Yes")
-                            #self.output.write("Yes\n")
-                            return
-                        else:
-                            print("No")
-                            #self.output.write("No\n")
-                            return
-        #self.output.write("No\n")
-        print("No")
-
-    def closest_relation(self, person_two, person_one):
-        #print("R " + person_one.name + " " + person_two.name + "\n")
-        #self.output.write("\n" + "R " + person_one.name + " " + person_two.name + "\n")
-        if person_two in person_one.family_tree["spouse"]:
-            print("spouse")
-            #self.output.write("spouse\n")
-            return
-        if person_two in person_one.family_tree["parent"]:
-            print("parent")
-            #self.output.write("parent\n")
-            return
-        if person_two in person_one.family_tree["sibling"]:
-            print("sibling")
-            #self.output.write("sibling\n")
-            return
-        if person_two in person_one.family_tree["half-sibling"]:
-            print("half-sibling")
-            #self.output.write("half-sibling\n")
-            return
-        if person_two in person_one.family_tree["ancestor"]:
-            print("ancestor")
-            #self.output.write("ancestor\n")
-            return
-        if person_two in person_one.family_tree["cousin"]:
-            print("cousin")
-            #self.output.write("cousin\n")
-            return
-        else:
-            #self.output.write("Unrelated\n")
-            print("Unrelated")
-            return
-
-def retrieve_person(person_name):
-    for person in person_list:
-        if person.name == person_name:
-            return person
-
-    x = Person(person_name)
-    person_list.append(x)
-    return x
-
-def fileRead():
-    op = Operations()
-    #print(sys.stdin.buffer.read())
-    x = sys.stdin.buffer.read()
-    x = str(x, "utf-8")
-    #print(x)
-
-    input_list = x.split("\n")
-    #print(input_list)
-    # open file and read all text
-    #f = open(sys.argv[1], mode='r')
-    #text = f.read()
-    # tokenize words with " " delimiter
-    #text = text.split("\n")
-    text = input_list
-    for line in text:
-        line.rsplit()
-        commands = line.split(" ")
-
-        if commands[0] is "E":
-            if len(commands) is 4:
-                #print(commands)
-                person_one = retrieve_person(commands[1])
-                person_two = retrieve_person(commands[2])
-                person_three = retrieve_person(commands[3])
-                person_three.add_parents(person_one, person_two)
-
-            if len(commands) is 3:
-                person_one = retrieve_person(commands[1])
-                person_two = retrieve_person(commands[2])
-                person_one.add_spouse(person_two)
-
-        if commands[0] is "W":
-            person_one = retrieve_person(commands[2])
-            relation = commands[1]
-            print("\n" + line)
-            op.list_relation(person_one.name, relation)
-
-        if commands[0] is "R":
-            person_one = retrieve_person(commands[1])
-            person_two = retrieve_person(commands[2])
-            print("\n" + line)
-            op.closest_relation(person_one, person_two)
-
-        if commands[0] is "X":
-            person_one = retrieve_person(commands[1])
-            relation = commands[2]
-            person_two = retrieve_person(commands[3])
-            print("\n" + line)
-            op.is_relation(person_one.name, person_two.name, relation)
+    def is_child(self, child):
+        return child in self.children
+        
+    
 
 
-def main():
-    fileRead()
+class Family(object):
+    def __init__(self, founder,gender):
 
-main()
+        self.names_to_nodes = {}
+        self.root = Member(founder,gender)    
+        self.names_to_nodes[founder] = self.root   
+
+    def set_children(self, mother, list_of_children):
+       
+        # convert name to Member node (should check for validity)
+        #print(str(self.names_to_nodes)+'fuck')
+        mom_node = self.names_to_nodes[mother]  
+        # add each child
+        for c in list_of_children:           
+            self.names_to_nodes[c.name] = c    
+            # set child's parent
+            c.add_parent(mom_node)        
+            # set the parent's child
+            mom_node.add_child(c)         
+    
+    def is_parent(self, mother, kid):
+        mom_node = self.names_to_nodes[mother]
+        child_node = self.names_to_nodes[kid]
+        return child_node.is_parent(mom_node)   
+
+    def is_child(self, kid, mother):
+       
+        mom_node = self.names_to_nodes[mother]   
+        child_node = self.names_to_nodes[kid]
+        return mom_node.is_child(child_node)
+
+    def cnt(self, name):
+        mother=self.names_to_nodes[name]
+        if mother==None:
+            return ['0']
+        return [str(len(mother.get_chidern()))]
+    def ans(self,name):
+        anss=[]
+        mother=self.names_to_nodes[name]
+        while (mother!=None):
+            
+            parent=mother.get_parent()
+            if parent!=None:
+                mother=self.names_to_nodes[parent.name]
+                anss.append(parent.name)
+            else:
+                mother=None
+        return anss
+    def bro(self,name):
+        anss=[]
+        mother=self.names_to_nodes[name]
+        if mother.get_parent() != None:
+            for child in mother.get_parent().get_chidern():
+                if child.gender=='M' and child.name!=name:
+                    anss.append(child.name)
+
+        return anss
+
+    def UNC(self,name):
+        anss=[]
+        mother=self.names_to_nodes[name]
+        if mother.get_parent() != None and mother.get_parent().get_parent():
+            father=mother.get_parent().name
+            for child in mother.get_parent().get_parent().get_chidern():
+                if child.gender=='M' and child.name!=father:
+                    anss.append(child.name)
+
+        return anss
+
+    def AUN(self,name):
+        anss=[]
+        mother=self.names_to_nodes[name]
+        if mother.get_parent() != None and mother.get_parent().get_parent():
+            father=mother.get_parent().name
+            for child in mother.get_parent().get_parent().get_chidern():
+                if child.gender=='F' and child.name!=father:
+                    anss.append(child.name)
+
+        return anss
+
+    def sis(self,name):
+        anss=[]
+        mother=self.names_to_nodes[name]
+        if mother.get_parent() != None:
+            for child in mother.get_parent().get_chidern():
+                if child.gender=='F' and child.name!=name:
+                    anss.append(child.name)
+
+        return anss
+
+    def dec(self,name):
+        anss=[]
+        chidern=self.names_to_nodes[name].get_chidern()
+        names=[]
+        while (chidern!=[]):
+            newclidern=[]
+            for child in chidern:
+                anss.append(child.name)
+                #print(child.name)
+                newclidern.extend(child.get_chidern())
+                #print(len(newclidern))
+            chidern=list(set(newclidern))
+
+        return anss
+    def search(self,name,types):
+        switcher = {
+            'ANS': self.ans(name),
+            'DEC': self.dec(name),
+            'CNT': self.cnt(name),
+            'BRO': self.bro(name),
+            'SIS': self.sis(name),
+            'UNC': self.UNC(name),
+            'AUN': self.AUN(name),
+        }
+        return switcher.get(types, "NuLL")
+def normalyze(lines):
+    nor=[]
+    for x in lines:
+        nor.append(x.replace('\n','',1))
+    return nor
+if __name__ == '__main__':
+    with open('input.txt') as f:
+        lines = normalyze(f.readlines())
+        
+        #Test section
+        f = None
+        for x in lines :
+            
+            if x.find('*') != -1:
+                break
+            if f==None:
+                f=Family(x.split(':')[0],'M')
+            else:
+                children=[]
+                for y in lines:
+                    
+                    if x.split(':')[0]==y.split(':')[0]:
+                        children.append(Member(y.split(':')[1].split(' ')[0],y[-1]))
+                f.set_children(x.split(':')[0],children)
+        out=False
+        with open('output.txt', 'w') as outFile:
+            for x in lines :
+                if x.find('*') != -1:
+                    out= not out
+                if out==True and len(x.split(' '))>1:
+                    print(f.search(x.split(' ')[1],x.split(' ')[0]))
+                    outFile.write(' '.join(f.search(x.split(' ')[1],x.split(' ')[0])))
+                    outFile.write('\n')
+
+
+        #f.set_children("a", ["b", "c"])
+
+        words = ["zeroth", "first", "second", "third", "fourth", "fifth", "non"]
+        print()
